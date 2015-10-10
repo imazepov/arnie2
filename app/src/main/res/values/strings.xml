@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Stronger You</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_select_exercise">Select exercise</string>
+    <string name="title_activity_exercise_sets">Exercise sets</string>
+    <string name="title_activity_session_calendar">Past sessions</string>
+    <string name="title_activity_past_session_view">Session on %s</string>
+    <string name="action_past_sessions">Past sessions</string>
+</resources>

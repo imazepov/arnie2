@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="muscle_groups">
+        <item>"{'id':1,'name':'Chest'}"</item>
+        <item>"{'id':2,'name':'Back'}"</item>
+        <item>"{'id':3,'name':'Legs'}"</item>
+        <item>"{'id':4,'name':'Shoulders'}"</item>
+        <item>"{'id':5,'name':'Arms'}"</item>
+    </string-array>
+    <string-array name="exercises">
+        <item>"{'id':1,'name':'Bench press','muscleGroupIds':[1,4,5]}"</item>
+        <item>"{'id':2,'name':'Squat','muscleGroupIds':[3]}"</item>
+        <item>"{'id':3,'name':'Deadlift','muscleGroupIds':[2]}"</item>
+    </string-array>
+</resources>
