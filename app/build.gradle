@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'org.jruyi.thrift'
 
 android {
     compileSdkVersion 22
@@ -26,13 +25,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-}
-
-compileThrift {
-    recurse true
-    generator 'java', 'private-members'
-    outputDir 'src/main/java/arnie/thrift'
-    createGenFolder false
+    sourceSets { main { java.srcDirs = ['src/main/java', 'src/main/java/thrift'] } }
 }
 
 dependencies {
@@ -42,6 +35,16 @@ dependencies {
     compile 'de.greenrobot:greendao:1.3.7'
     compile 'com.google.guava:guava:12.0'
     compile 'com.squareup:android-times-square:1.5.0@aar'
+    compile 'org.apache.thrift:libthrift:0.9.3'
+    compile 'org.glassfish:javax.annotation:10.0-b28'
 }
 
-apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'org.jruyi.thrift'
+
+compileThrift {
+    recurse true
+    generator 'java', 'android'
+    sourceDir 'src/main/java/arnie'
+    outputDir 'src/main/java/thrift'
+    createGenFolder false
+}
