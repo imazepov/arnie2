@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'org.jruyi.thrift'
 
 android {
     compileSdkVersion 22
@@ -24,6 +26,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+
+compileThrift {
+    recurse true
+    generator 'java', 'private-members'
+    outputDir 'src/main/java/arnie/thrift'
+    createGenFolder false
 }
 
 dependencies {

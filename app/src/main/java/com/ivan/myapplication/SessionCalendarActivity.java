@@ -1,5 +1,7 @@
 package com.ivan.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -17,6 +19,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import arnie.data.Exercise;
+import arnie.data.ExerciseSet;
 import arnie.data.WorkoutSession;
 import arnie.data.WorkoutSessionDao;
 
@@ -49,8 +53,9 @@ public class SessionCalendarActivity extends ActionBarActivity {
 
         CalendarPickerView cv = (CalendarPickerView) findViewById(R.id.calendarView);
         cv.setOnDateSelectedListener(new OnCalendarDateChanged());
+        cv.setOnInvalidDateSelectedListener(this::invalidDateSelected);
         cv.init(start, end.getTime())
-                .withHighlightedDates(Lists.transform(sessions, ws -> ws.getStartTime()))
+                .withHighlightedDates(Lists.transform(sessions, WorkoutSession::getStartTime))
                 .withSelectedDate(selectedTime);
     }
 
@@ -66,28 +71,52 @@ public class SessionCalendarActivity extends ActionBarActivity {
                     WorkoutSessionDao.Properties.EndTime.gt(startDate.getTime())
             ).list();
 
-            Intent intent;
             if (sessions.isEmpty()) {
-                Toast toast = Toast.makeText(
-                        SessionCalendarActivity.this,
-                        String.format("No workout sessions for %s",
-                            new SimpleDateFormat("MMM, d, yyyy").format(startDate)),
-                        Toast.LENGTH_SHORT
-                );
-                toast.show();
+                invalidDateSelected(startDate);
             } else if (sessions.size() == 1) {
-                intent = new Intent(SessionCalendarActivity.this, PastSessionViewActivity.class);
-                intent.putExtra("sessionId", sessions.get(0).getId());
-                SessionCalendarActivity.this.startActivity(intent);
+                selectSession(sessions.get(0));
             } else {
                 // Select session
+                List<String> sessionStrs = Lists.transform(sessions, ws -> {
+                    String startTimeStr = new SimpleDateFormat("h:mm a").format(ws.getStartTime());
+                    List<ExerciseSet> sets = ws.getExerciseSets();
+                    String exerciseStr = "<none>";
+                    if (!sets.isEmpty()) {
+                        Exercise ex = sets.get(0).getExercise();
+                        if (ex != null) {
+                            exerciseStr = ex.getName();
+                        }
+                    }
+                    return String.format("%s at %s", startTimeStr, exerciseStr);
+                });
+                AlertDialog.Builder dialog = new AlertDialog.Builder(SessionCalendarActivity.this)
+                        .setTitle("Select session beginning with...")
+                        .setItems(sessionStrs.toArray(new String[sessionStrs.size()]), (dlg, which) -> {
+                            selectSession(sessions.get(which));
+                        });
+                dialog.show();
             }
         }
 
         @Override
         public void onDateUnselected(Date date) {
-
         }
+    }
+
+    private void invalidDateSelected(Date date) {
+        Toast toast = Toast.makeText(
+                SessionCalendarActivity.this,
+                String.format("No workout sessions for %s",
+                    new SimpleDateFormat("MMM, d, yyyy").format(date)),
+                Toast.LENGTH_SHORT
+        );
+        toast.show();
+    }
+
+    private void selectSession(WorkoutSession session) {
+        Intent intent = new Intent(this, PastSessionViewActivity.class);
+        intent.putExtra("sessionId", session.getId());
+        this.startActivity(intent);
     }
 
     @Override

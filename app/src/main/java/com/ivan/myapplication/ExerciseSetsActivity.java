@@ -54,6 +54,9 @@ public class ExerciseSetsActivity extends ActionBarActivity {
         currentExercise = exerciseDao.load(exerciseId);
         currentSession = WorkoutSessionManager.getCurrentWorkoutSession(this);
 
+        setTitle(String.format(getResources().getString(R.string.title_activity_exercise_sets),
+                               currentExercise.getName()));
+
         sets = setDao.queryBuilder().where(
                 ExerciseSetDao.Properties.ExerciseId.eq(exerciseId),
                 ExerciseSetDao.Properties.WorkoutSessionId.eq(currentSession.getId())
