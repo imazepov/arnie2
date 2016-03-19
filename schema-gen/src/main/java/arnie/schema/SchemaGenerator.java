@@ -7,7 +7,7 @@ import de.greenrobot.daogenerator.Schema;
 
 public class SchemaGenerator {
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(6, "arnie.data");
+        Schema schema = new Schema(6, "com.fortius.arnie.data");
 
         Entity muscleGroup = schema.addEntity("MuscleGroup");
         muscleGroup.addIdProperty();

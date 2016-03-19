@@ -72,7 +72,9 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/dex-cache" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/multidex/1.0.1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.8.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.squareup/android-times-square/1.5.0/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jacoco" />
@@ -92,16 +94,19 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 22 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="javax.annotation-10.0-b28" level="project" />
-    <orderEntry type="library" exported="" name="jsr305-1.3.9" level="project" />
     <orderEntry type="library" exported="" name="greendao-1.3.7" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.4.1" level="project" />
-    <orderEntry type="library" exported="" name="android-times-square-1.5.0" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-22.1.1" level="project" />
     <orderEntry type="library" exported="" name="guava-12.0" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-22.1.1" level="project" />
-    <orderEntry type="library" exported="" name="libthrift-0.9.3" level="project" />
-    <orderEntry type="library" exported="" name="slf4j-api-1.7.12" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.1.1" level="project" />
+    <orderEntry type="library" exported="" name="javax.annotation-10.0-b28" level="project" />
+    <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="jsr305-1.3.9" level="project" />
+    <orderEntry type="library" exported="" name="android-times-square-1.5.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
+    <orderEntry type="library" exported="" name="libthrift-0.9.3" level="project" />
+    <orderEntry type="library" exported="" name="bolts-android-1.2.1" level="project" />
+    <orderEntry type="library" exported="" name="facebook-android-sdk-4.8.0" level="project" />
+    <orderEntry type="library" exported="" name="slf4j-api-1.7.12" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-23.0.1" level="project" />
   </component>
 </module>

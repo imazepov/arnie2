@@ -7,6 +7,16 @@
     android:id="@+id/main"
     android:background="@drawable/bench_small">
 
+    <fragment
+        android:name="com.fortius.arnie.FbLoginFragment"
+        android:id="@+id/frgLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+        tools:layout="@layout/fragment_fb_login" />
+
     <Button
         android:layout_width="400px"
         android:layout_height="150px"
@@ -19,5 +29,6 @@
         android:onClick="onStartClick"
         android:background="#fff45644"
         android:textColor="#fff4f2f0"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:visibility="gone" />
 </RelativeLayout>

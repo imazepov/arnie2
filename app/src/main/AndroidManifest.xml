@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ivan.myapplication" >
+    package="com.fortius.arnie" >
 
     <application
         android:allowBackup="true"
@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.fortius.arnie.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,22 +17,33 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SelectExerciseActivity"
+            android:name="com.fortius.arnie.SelectExerciseActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_select_exercise" >
         </activity>
         <activity
-            android:name=".ExerciseSetsActivity"
+            android:name="com.fortius.arnie.ExerciseSetsActivity"
             android:label="@string/title_activity_exercise_sets" >
         </activity>
         <activity
-            android:name=".SessionCalendarActivity"
+            android:name="com.fortius.arnie.SessionCalendarActivity"
             android:label="@string/title_activity_session_calendar" >
         </activity>
         <activity
-            android:name=".PastSessionViewActivity"
+            android:name="com.fortius.arnie.PastSessionViewActivity"
             android:label="@string/title_activity_past_session_view" >
         </activity>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

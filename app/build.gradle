@@ -4,9 +4,8 @@ apply plugin: 'me.tatarka.retrolambda'
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
-
     defaultConfig {
-        applicationId "com.ivan.myapplication"
+        applicationId 'com.fortius.arnie'
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
@@ -25,7 +24,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+    }
     sourceSets { main { java.srcDirs = ['src/main/java', 'src/main/java/thrift'] } }
+    productFlavors {
+    }
 }
 
 dependencies {
@@ -37,14 +41,20 @@ dependencies {
     compile 'com.squareup:android-times-square:1.5.0@aar'
     compile 'org.apache.thrift:libthrift:0.9.3'
     compile 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'com.facebook.android:facebook-android-sdk:4.8.0'
 }
 
 apply plugin: 'org.jruyi.thrift'
 
+task copyThrift (type: Copy) {
+    from '../../arnie-mono/arnie/arnie.thrift'
+    into 'src/main/java/com/fortius/arnie'
+}
+
 compileThrift {
     recurse true
     generator 'java', 'android'
-    sourceDir 'src/main/java/arnie'
+    sourceDir 'src/main/java/com/fortius/arnie'
     outputDir 'src/main/java/thrift'
     createGenFolder false
 }
