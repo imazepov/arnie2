@@ -15,6 +15,7 @@ public class SchemaGenerator {
 
         Entity exercise = schema.addEntity("Exercise");
         exercise.addIdProperty();
+        exercise.addStringProperty("slug");
         exercise.addStringProperty("name");
 
         Entity exerciseMuscleGroupRef = schema.addEntity("ExerciseMuscleGroupRef");

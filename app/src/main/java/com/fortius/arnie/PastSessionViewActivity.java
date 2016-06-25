@@ -2,15 +2,17 @@ package com.fortius.arnie;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 
-import com.google.common.collect.Lists;
 import com.fortius.arnie.data.DataAccess;
+import com.fortius.arnie.data.Exercise;
+import com.fortius.arnie.data.ExerciseSet;
+import com.fortius.arnie.data.WorkoutSession;
+import com.fortius.arnie.data.WorkoutSessionDao;
 import com.fortius.arnie.data.WorkoutSessionManager;
+import com.google.common.collect.Lists;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -19,13 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.fortius.arnie.data.Exercise;
-import com.fortius.arnie.data.ExerciseSet;
-import com.fortius.arnie.data.WorkoutSession;
-import com.fortius.arnie.data.WorkoutSessionDao;
 
-
-public class PastSessionViewActivity extends ActionBarActivity {
+public class PastSessionViewActivity extends BaseActivity {
 
     private WorkoutSessionDao wsDao;
     private WorkoutSession session;
@@ -108,10 +105,8 @@ public class PastSessionViewActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_past_session_view, menu);
-        return true;
+    protected int getMenuResource() {
+        return R.menu.menu_past_session_view;
     }
 
     @Override

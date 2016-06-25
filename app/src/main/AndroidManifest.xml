@@ -2,13 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fortius.arnie" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.fortius.arnie.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,33 +20,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.fortius.arnie.SelectExerciseActivity"
+            android:name=".SelectExerciseActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_select_exercise" >
         </activity>
         <activity
-            android:name="com.fortius.arnie.ExerciseSetsActivity"
+            android:name=".ExerciseSetsActivity"
             android:label="@string/title_activity_exercise_sets" >
         </activity>
         <activity
-            android:name="com.fortius.arnie.SessionCalendarActivity"
+            android:name=".SessionCalendarActivity"
             android:label="@string/title_activity_session_calendar" >
         </activity>
         <activity
-            android:name="com.fortius.arnie.PastSessionViewActivity"
+            android:name=".PastSessionViewActivity"
             android:label="@string/title_activity_past_session_view" >
         </activity>
-
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+            android:value="@string/facebook_app_id" />
+
+        <service
+            android:name=".sync.SyncService"
+            android:exported="false" >
+        </service>
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

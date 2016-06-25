@@ -1,29 +1,26 @@
 package com.fortius.arnie;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 
-import com.google.common.collect.Lists;
+import com.fortius.arnie.data.DaoSession;
 import com.fortius.arnie.data.DataAccess;
+import com.fortius.arnie.data.Exercise;
+import com.fortius.arnie.data.MuscleGroup;
+import com.fortius.arnie.data.MuscleGroupDao;
+import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fortius.arnie.data.DaoSession;
-import com.fortius.arnie.data.Exercise;
-import com.fortius.arnie.data.MuscleGroup;
-import com.fortius.arnie.data.MuscleGroupDao;
 
-
-public class SelectExerciseActivity extends ActionBarActivity {
+public class SelectExerciseActivity extends BaseActivity {
 
     private DaoSession daoSession;
     private Exercise selectedExercise;
@@ -52,7 +49,7 @@ public class SelectExerciseActivity extends ActionBarActivity {
             groupedExercises.add(exercises);
             for(Exercise ex : exercises) {
                 Map<String, String> map = new HashMap<>();
-                map.put("Name", ex.getName());
+                map.put("Name", ex.getName() + " - " + ex.getSlug());
                 results.add(map);
             }
             return results;
@@ -83,10 +80,8 @@ public class SelectExerciseActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_select_exercise, menu);
-        return true;
+    protected int getMenuResource() {
+        return R.menu.menu_select_exercise;
     }
 
     @Override

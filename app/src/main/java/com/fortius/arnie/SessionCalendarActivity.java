@@ -3,13 +3,15 @@ package com.fortius.arnie;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.common.collect.Lists;
 import com.fortius.arnie.data.DataAccess;
+import com.fortius.arnie.data.Exercise;
+import com.fortius.arnie.data.ExerciseSet;
+import com.fortius.arnie.data.WorkoutSession;
+import com.fortius.arnie.data.WorkoutSessionDao;
+import com.google.common.collect.Lists;
 import com.squareup.timessquare.CalendarPickerView;
 
 import java.text.SimpleDateFormat;
@@ -17,13 +19,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.fortius.arnie.data.Exercise;
-import com.fortius.arnie.data.ExerciseSet;
-import com.fortius.arnie.data.WorkoutSession;
-import com.fortius.arnie.data.WorkoutSessionDao;
 
-
-public class SessionCalendarActivity extends ActionBarActivity {
+public class SessionCalendarActivity extends BaseActivity {
 
     private WorkoutSessionDao wsDao;
 
@@ -118,10 +115,8 @@ public class SessionCalendarActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_session_calendar, menu);
-        return true;
+    protected int getMenuResource() {
+        return R.menu.menu_session_calendar;
     }
 
     @Override

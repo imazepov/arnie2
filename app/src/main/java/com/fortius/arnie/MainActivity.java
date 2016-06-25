@@ -1,17 +1,12 @@
 package com.fortius.arnie;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,37 +22,34 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.fortius.arnie.data.Exercise;
 import com.fortius.arnie.data.ExerciseSet;
 import com.fortius.arnie.data.WorkoutSession;
 import com.fortius.arnie.data.WorkoutSessionManager;
+import com.fortius.arnie.sync.SyncService;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends BaseActivity
     implements FbLoginFragment.OnFragmentInteractionListener {
 
     private CallbackManager callbackManager;
-    private boolean isLoggedIn;
-    private AccessToken fbAccessToken;
     private boolean splashScreen;
     private volatile WorkoutSession currentSession;
     private List<Long> sessionExerciseIds;
 
+    private static volatile AccessToken fbAccessToken;
+
     private class FbLoginCallback implements FacebookCallback<LoginResult> {
         @Override
         public void onSuccess(LoginResult loginResult) {
-            MainActivity.this.isLoggedIn = true;
-            MainActivity.this.fbAccessToken = loginResult.getAccessToken();
-            MainActivity.this.showStartButton();
+            MainActivity.fbAccessToken = loginResult.getAccessToken();
+            MainActivity.this.showStartButton(true);
         }
 
         @Override
@@ -71,6 +63,8 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SyncService.startFullSync(this);
+
         super.onCreate(savedInstanceState);
         splashScreen = true;
 
@@ -78,28 +72,20 @@ public class MainActivity extends ActionBarActivity
         callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager, new FbLoginCallback());
 
-        WorkoutSession previousSesison = null;
-        if (isLoggedIn) {
-            showStartButton();
-            previousSesison = WorkoutSessionManager.fetchPreviousSession(this);
-        }
-        if (previousSesison != null && !previousSesison.getExerciseSets().isEmpty()) {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            WorkoutSession session = previousSesison;
-            dialog.setMessage("Previous session exists. Continue?")
-                    .setCancelable(false)
-                    .setPositiveButton("Continue", (dlg, id) -> {
-                        currentSession = session;
-                        displayCurrentSession();
-                    })
-                    .setNegativeButton("Start over", (dlg, id) -> {
-                        currentSession = WorkoutSessionManager.startNewSession(this);
-                        displayCurrentSession();
-                    });
-            dialog.show();
+        setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        fbAccessToken = AccessToken.getCurrentAccessToken();
+        if (fbAccessToken == null) {
+            showStartButton(false);
+        } else if (currentSession == null) {
+            showStartButton(true);
         } else {
-            setContentView(R.layout.activity_main);
-            currentSession = WorkoutSessionManager.startNewSession(this);
+            displayCurrentSession();
         }
     }
 
@@ -131,10 +117,30 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    protected int getMenuResource() {
+        return R.menu.menu_main;
+    }
+
+    public static void addFbLogoutButton(Menu menu, Activity activity) {
+        if (fbAccessToken != null) {
+            MenuItem mi = menu.add(R.string.action_logout);
+            mi.setOnMenuItemClickListener(item -> {
+                LoginManager.getInstance().logOut();
+                fbAccessToken = null;
+                redirectToMainIfNotLoggedIn(activity);
+                return true;
+            });
+        } else {
+            menu.clear();
+        }
+    }
+
+    // Should run in every activity's onResume
+    public static void redirectToMainIfNotLoggedIn(Activity activity) {
+        if (fbAccessToken == null) {
+            activity.startActivity(new Intent(activity, MainActivity.class));
+            activity.finish();
+        }
     }
 
     @Override
@@ -198,26 +204,48 @@ public class MainActivity extends ActionBarActivity
                 l -> exerciseSetGroupToString(l)));
     }
 
-    public void showStartButton() {
+    public void showStartButton(boolean show) {
         Button startBtn = (Button)findViewById(R.id.btnStart);
 
         FragmentManager mgr = getFragmentManager();
         FbLoginFragment loginFrg = (FbLoginFragment) mgr.findFragmentById(R.id.frgLogin);
 
         FragmentTransaction tr = mgr.beginTransaction();
-        tr.remove(loginFrg);
+        if(show) {
+            tr.hide(loginFrg);
+        } else {
+            tr.show(loginFrg);
+        }
         tr.commit();
 
-        startBtn.setVisibility(View.VISIBLE);
+        startBtn.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     // Click handlers
     public void onStartClick(View view) {
-        if (currentSession == null) {
+        if (currentSession != null) {
+            displayCurrentSession();
             return;
         }
-        splashScreen = false;
-        displayCurrentSession();
+
+        WorkoutSession previousSesison = WorkoutSessionManager.fetchPreviousSession(this);
+        if (previousSesison != null && !previousSesison.getExerciseSets().isEmpty()) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setMessage("Previous session exists. Continue?")
+                    .setCancelable(false)
+                    .setPositiveButton("Continue", (dlg, id) -> {
+                        currentSession = previousSesison;
+                        displayCurrentSession();
+                    })
+                    .setNegativeButton("Start over", (dlg, id) -> {
+                        currentSession = WorkoutSessionManager.startNewSession(this);
+                        displayCurrentSession();
+                    });
+            dialog.show();
+        } else {
+            currentSession = WorkoutSessionManager.startNewSession(this);
+            displayCurrentSession();
+        }
     }
 
     public void onAddExClick(View view) {
@@ -255,5 +283,9 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+    }
+
+    public CallbackManager getFbCallbackManager() {
+        return callbackManager;
     }
 }

@@ -9,5 +9,7 @@
     <string name="title_activity_past_session_view">Session on %s</string>
     <string name="action_past_sessions">Past sessions</string>
 
+    <string name="action_logout">Log out</string>
+
     <string name="facebook_app_id">675183159288630</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.fortius.arnie;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
 import com.facebook.login.widget.LoginButton;
 
 
@@ -30,6 +33,8 @@ public class FbLoginFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private CallbackManager callbackManager;
 
     /**
      * Use this factory method to create a new instance of
@@ -72,6 +77,8 @@ public class FbLoginFragment extends Fragment {
         loginButton.setReadPermissions("user_friends");
         loginButton.setFragment(this);
 
+        AccessToken token = AccessToken.getCurrentAccessToken();
+
         return view;
     }
 
@@ -83,6 +90,12 @@ public class FbLoginFragment extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -90,6 +103,10 @@ public class FbLoginFragment extends Fragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
+        }
+
+        if (activity instanceof MainActivity) {
+            callbackManager = ((MainActivity) activity).getFbCallbackManager();
         }
     }
 

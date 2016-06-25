@@ -25,7 +25,7 @@ import com.fortius.arnie.data.ExerciseSetDao;
 import com.fortius.arnie.data.WorkoutSession;
 
 
-public class ExerciseSetsActivity extends ActionBarActivity {
+public class ExerciseSetsActivity extends BaseActivity {
 
     private DaoSession daoSession;
     private ExerciseSetDao setDao;
@@ -70,10 +70,8 @@ public class ExerciseSetsActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_exercise_sets, menu);
-        return true;
+    protected int getMenuResource() {
+        return R.menu.menu_exercise_sets;
     }
 
     @Override

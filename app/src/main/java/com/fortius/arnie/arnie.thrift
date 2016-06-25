@@ -6,7 +6,7 @@ namespace csharp Arnie.Data.Interop
 struct Exercise {
     1: string id;
     2: string displayName;
-    3: string muscleGroup;
+    3: list<string> muscleGroups;
 }
 
 struct ExerciseSet {

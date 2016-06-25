@@ -99,7 +99,7 @@ public class DataAccess {
                 resources.getStringArray(R.array.exercises), exDao, obj -> {
                     long exId = obj.getLong("id");
                     String exName = obj.getString("name");
-                    return Arrays.asList(new Exercise(exId, exName));
+                    return Arrays.asList(new Exercise(exId, "", exName));
                 });
 
         if (exercisesInserted) {

@@ -11,6 +11,7 @@ import de.greenrobot.dao.DaoException;
 public class Exercise {
 
     private Long id;
+    private String slug;
     private String name;
 
     /** Used to resolve relations */
@@ -29,8 +30,9 @@ public class Exercise {
         this.id = id;
     }
 
-    public Exercise(Long id, String name) {
+    public Exercise(Long id, String slug, String name) {
         this.id = id;
+        this.slug = slug;
         this.name = name;
     }
 
@@ -46,6 +48,14 @@ public class Exercise {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     public String getName() {
